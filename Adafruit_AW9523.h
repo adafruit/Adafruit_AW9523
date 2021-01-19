@@ -46,6 +46,10 @@ public:
   bool configureGPIO(uint16_t pins);
   bool openDrainPort0(bool od);
 
+  void pinMode(uint8_t pin, bool mode);
+  void digitalWrite(uint8_t pin, bool val);
+
+
 protected:
   uint16_t _pin_outputs = 0;
   Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface

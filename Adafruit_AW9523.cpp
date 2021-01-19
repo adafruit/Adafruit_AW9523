@@ -67,6 +67,9 @@ bool Adafruit_AW9523::begin(uint8_t addr, TwoWire *wire) {
     return false;
   }
 
+  configureGPIO(0x0); // all inputs!
+  openDrainPort0(false); // push pull default
+
   return true;
 }
 
@@ -98,6 +101,28 @@ bool Adafruit_AW9523::configureGPIO(uint16_t pins) {
   }
 
   return true;
+}
+
+void Adafruit_AW9523::digitalWrite(uint8_t pin, bool val) {
+  Adafruit_I2CRegister output0reg = Adafruit_I2CRegister(i2c_dev, AW9523_REG_OUTPUT0, 2, LSBFIRST);
+  Adafruit_I2CRegisterBits outbit =
+      Adafruit_I2CRegisterBits(&output0reg, 1, pin); // # bits, bit_shift
+
+  outbit.write(val);
+}
+
+
+void Adafruit_AW9523::pinMode(uint8_t pin, bool mode) {
+  Adafruit_I2CRegister conf0reg = Adafruit_I2CRegister(i2c_dev, AW9523_REG_CONFIG0, 2, LSBFIRST);
+  Adafruit_I2CRegisterBits confbit =
+      Adafruit_I2CRegisterBits(&conf0reg, 1, pin); // # bits, bit_shift
+
+  if (mode == OUTPUT) {
+    confbit.write(0);
+  }
+  if (mode == INPUT) {
+    confbit.write(1);
+  }
 }
 
 bool Adafruit_AW9523::openDrainPort0(bool od) {
