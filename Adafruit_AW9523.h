@@ -21,18 +21,18 @@
 #include <Adafruit_I2CDevice.h>
 #include <Adafruit_I2CRegister.h>
 
-#define AW9523_DEFAULT_ADDR 0x58
+#define AW9523_DEFAULT_ADDR 0x58 ///< The default I2C address for our breakout
 
-#define AW9523_LED_MODE 0x3
+#define AW9523_LED_MODE 0x3 ///< Special pinMode() macro for constant current
 
-#define AW9523_REG_CHIPID 0x10
-#define AW9523_REG_SOFTRESET 0x7F
-#define AW9523_REG_INPUT0 0x00
-#define AW9523_REG_OUTPUT0 0x02
-#define AW9523_REG_CONFIG0 0x04
-#define AW9523_REG_INTENABLE0 0x06
-#define AW9523_REG_GCR 0x11
-#define AW9523_REG_LEDMODE 0x12
+#define AW9523_REG_CHIPID 0x10     ///< Register for hardcode chip ID
+#define AW9523_REG_SOFTRESET 0x7F  ///< Register for soft resetting
+#define AW9523_REG_INPUT0 0x00     ///< Register for reading input values
+#define AW9523_REG_OUTPUT0 0x02    ///< Register for writing output values
+#define AW9523_REG_CONFIG0 0x04    ///< Register for configuring direction
+#define AW9523_REG_INTENABLE0 0x06 ///< Register for enabling interrupt
+#define AW9523_REG_GCR 0x11        ///< Register for general configuration
+#define AW9523_REG_LEDMODE 0x12    ///< Register for configuring const current
 
 /*!
  *    @brief  Class that stores state and functions for interacting with
@@ -62,7 +62,6 @@ public:
   void enableInterrupt(uint8_t pin, bool en);
 
 protected:
-  uint16_t _pin_outputs = 0;
   Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
 };
 
