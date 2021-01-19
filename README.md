@@ -1,4 +1,4 @@
-# Adafruit AW9523 Humidity/Temp Sensor for Arduino [![Build Status](https://github.com/adafruit/Adafruit_AW9523/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_AW9523/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](http://adafruit.github.io/Adafruit_AW9523/html/index.html)
+# Adafruit AW9523 GPIO Expander and LED Driver for Arduino [![Build Status](https://github.com/adafruit/Adafruit_AW9523/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_AW9523/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](http://adafruit.github.io/Adafruit_AW9523/html/index.html)
 
 This is a library for the AW9523 GPIO Expander and LED Driver
 
