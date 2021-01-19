@@ -69,6 +69,7 @@ bool Adafruit_AW9523::begin(uint8_t addr, TwoWire *wire) {
 
   configureDirection(0x0); // all inputs!
   openDrainPort0(false); // push pull default
+  interruptEnableGPIO(0); // no interrupt
 
   return true;
 }
@@ -84,14 +85,20 @@ bool Adafruit_AW9523::outputGPIO(uint16_t pins) {
   if (! output0reg.write(pins)) {
     return false;
   }
-  _pin_outputs = pins;
-
   return true;
 }
 
 uint16_t Adafruit_AW9523::inputGPIO(void) {
   Adafruit_I2CRegister input0reg = Adafruit_I2CRegister(i2c_dev, AW9523_REG_INPUT0, 2, LSBFIRST);
   return input0reg.read();
+}
+
+bool Adafruit_AW9523::interruptEnableGPIO(uint16_t pins) {
+  Adafruit_I2CRegister int0reg = Adafruit_I2CRegister(i2c_dev, AW9523_REG_INTENABLE0, 2, LSBFIRST);
+  if (! int0reg.write(~pins)) {
+    return false;
+  }
+  return true;
 }
 
 bool Adafruit_AW9523::configureDirection(uint16_t pins) {
@@ -148,7 +155,7 @@ bool Adafruit_AW9523::digitalRead(uint8_t pin) {
 }
 
 
-void Adafruit_AW9523::enableInterrupts(uint8_t pin, bool en) {
+void Adafruit_AW9523::enableInterrupt(uint8_t pin, bool en) {
   Adafruit_I2CRegister intenablereg = Adafruit_I2CRegister(i2c_dev, AW9523_REG_INTENABLE0, 2, LSBFIRST);
   Adafruit_I2CRegisterBits irqbit =
       Adafruit_I2CRegisterBits(&intenablereg, 1, pin); // # bits, bit_shift

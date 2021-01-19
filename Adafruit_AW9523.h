@@ -30,7 +30,7 @@
 #define AW9523_REG_INPUT0 0x00
 #define AW9523_REG_OUTPUT0 0x02
 #define AW9523_REG_CONFIG0 0x04
-#define AW9523_REG_INTENABLE0 0x04
+#define AW9523_REG_INTENABLE0 0x06
 #define AW9523_REG_GCR 0x11
 #define AW9523_REG_LEDMODE 0x12
 
@@ -53,13 +53,14 @@ public:
   uint16_t inputGPIO(void);
   bool configureDirection(uint16_t pins);
   bool configureLEDMode(uint16_t pins);
+  bool interruptEnableGPIO(uint16_t pins);
 
   // Individual pin control
   void pinMode(uint8_t pin, uint8_t mode);
   void digitalWrite(uint8_t pin, bool val);
   bool digitalRead(uint8_t pin);
   void analogWrite(uint8_t pin, uint8_t val);
-  void enableInterrupts(uint8_t pin, bool en);
+  void enableInterrupt(uint8_t pin, bool en);
 
 protected:
   uint16_t _pin_outputs = 0;

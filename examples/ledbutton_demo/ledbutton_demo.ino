@@ -19,6 +19,7 @@ void setup() {
   Serial.println("AW9523 found!");
   aw.pinMode(LedPin, OUTPUT);
   aw.pinMode(ButtonPin, INPUT);
+  aw.enableInterrupt(ButtonPin, true);
 }
 
 
