@@ -67,7 +67,7 @@ bool Adafruit_AW9523::begin(uint8_t addr, TwoWire *wire) {
     return false;
   }
 
-  configureGPIO(0x0); // all inputs!
+  configureDirection(0x0); // all inputs!
   openDrainPort0(false); // push pull default
 
   return true;
@@ -94,9 +94,18 @@ uint16_t Adafruit_AW9523::inputGPIO(void) {
   return input0reg.read();
 }
 
-bool Adafruit_AW9523::configureGPIO(uint16_t pins) {
+bool Adafruit_AW9523::configureDirection(uint16_t pins) {
   Adafruit_I2CRegister conf0reg = Adafruit_I2CRegister(i2c_dev, AW9523_REG_CONFIG0, 2, LSBFIRST);
   if (! conf0reg.write(~pins)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool Adafruit_AW9523::configureLEDMode(uint16_t pins) {
+  Adafruit_I2CRegister ledmodereg = Adafruit_I2CRegister(i2c_dev, AW9523_REG_LEDMODE, 2, LSBFIRST);
+  if (! ledmodereg.write(~pins)) {
     return false;
   }
 
@@ -122,6 +131,12 @@ void Adafruit_AW9523::pinMode(uint8_t pin, bool mode) {
   }
   if (mode == INPUT) {
     confbit.write(1);
+  }
+
+  if (mode == AW9523_LED_MODE) {
+    
+
+    confbit.write(0);
   }
 }
 

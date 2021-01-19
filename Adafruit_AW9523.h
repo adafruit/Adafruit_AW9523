@@ -28,6 +28,9 @@
 #define AW9523_REG_OUTPUT0 0x02
 #define AW9523_REG_CONFIG0 0x04
 #define AW9523_REG_GCR 0x11
+#define AW9523_REG_LEDMODE 0x12
+#define AW9523_LED_MODE 0x03
+
 
 /*!
  *    @brief  Class that stores state and functions for interacting with
@@ -43,11 +46,12 @@ public:
 
   bool outputGPIO(uint16_t pins);
   uint16_t inputGPIO(void);
-  bool configureGPIO(uint16_t pins);
+  bool configureDirection(uint16_t pins);
   bool openDrainPort0(bool od);
 
   void pinMode(uint8_t pin, bool mode);
   void digitalWrite(uint8_t pin, bool val);
+  bool configureLEDMode(uint16_t pins);
 
 
 protected:
