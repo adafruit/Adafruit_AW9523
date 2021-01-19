@@ -22,6 +22,9 @@
 #include <Adafruit_I2CRegister.h>
 
 #define AW9523_DEFAULT_ADDR 0x58
+
+#define AW9523_LED_MODE 0x3
+
 #define AW9523_REG_CHIPID 0x10
 #define AW9523_REG_SOFTRESET 0x7F
 #define AW9523_REG_INPUT0 0x00
@@ -29,7 +32,6 @@
 #define AW9523_REG_CONFIG0 0x04
 #define AW9523_REG_GCR 0x11
 #define AW9523_REG_LEDMODE 0x12
-#define AW9523_LED_MODE 0x03
 
 
 /*!
@@ -49,9 +51,10 @@ public:
   bool configureDirection(uint16_t pins);
   bool openDrainPort0(bool od);
 
-  void pinMode(uint8_t pin, bool mode);
+  void pinMode(uint8_t pin, uint8_t mode);
   void digitalWrite(uint8_t pin, bool val);
   bool configureLEDMode(uint16_t pins);
+  void analogWrite(uint8_t pin, uint8_t val);
 
 
 protected:

@@ -112,6 +112,25 @@ bool Adafruit_AW9523::configureLEDMode(uint16_t pins) {
   return true;
 }
 
+void Adafruit_AW9523::analogWrite(uint8_t pin, uint8_t val) {
+  uint8_t reg;
+
+  // See Table 13. 256 step dimming control register
+  if ((pin >= 0) && (pin <= 7)) {
+    reg = 0x24 + pin;
+  } 
+  if ((pin >= 8) && (pin <= 11)) {
+    reg = 0x20 + pin - 8;
+  }     
+  if ((pin >= 12) && (pin <= 15)) {
+    reg = 0x2C + pin - 12;
+  } 
+
+  Adafruit_I2CRegister ledCCreg = Adafruit_I2CRegister(i2c_dev, reg);
+
+  ledCCreg.write(val);
+}
+
 void Adafruit_AW9523::digitalWrite(uint8_t pin, bool val) {
   Adafruit_I2CRegister output0reg = Adafruit_I2CRegister(i2c_dev, AW9523_REG_OUTPUT0, 2, LSBFIRST);
   Adafruit_I2CRegisterBits outbit =
@@ -121,23 +140,32 @@ void Adafruit_AW9523::digitalWrite(uint8_t pin, bool val) {
 }
 
 
-void Adafruit_AW9523::pinMode(uint8_t pin, bool mode) {
+
+void Adafruit_AW9523::pinMode(uint8_t pin, uint8_t mode) {
+  // GPIO Direction
   Adafruit_I2CRegister conf0reg = Adafruit_I2CRegister(i2c_dev, AW9523_REG_CONFIG0, 2, LSBFIRST);
   Adafruit_I2CRegisterBits confbit =
       Adafruit_I2CRegisterBits(&conf0reg, 1, pin); // # bits, bit_shift
 
+  // GPIO mode or LED mode?
+  Adafruit_I2CRegister ledmodereg = Adafruit_I2CRegister(i2c_dev, AW9523_REG_LEDMODE, 2, LSBFIRST);
+  Adafruit_I2CRegisterBits modebit =
+    Adafruit_I2CRegisterBits(&ledmodereg, 1, pin); // # bits, bit_shift
+
   if (mode == OUTPUT) {
     confbit.write(0);
+    modebit.write(1);
   }
   if (mode == INPUT) {
     confbit.write(1);
+    modebit.write(1);
   }
 
   if (mode == AW9523_LED_MODE) {
-    
-
     confbit.write(0);
+    modebit.write(0);
   }
+
 }
 
 bool Adafruit_AW9523::openDrainPort0(bool od) {
