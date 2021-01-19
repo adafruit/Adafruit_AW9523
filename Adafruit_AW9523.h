@@ -34,7 +34,6 @@
 #define AW9523_REG_GCR 0x11
 #define AW9523_REG_LEDMODE 0x12
 
-
 /*!
  *    @brief  Class that stores state and functions for interacting with
  *            the AW9523 I2C GPIO expander
