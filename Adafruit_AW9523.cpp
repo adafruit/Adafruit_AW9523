@@ -139,6 +139,23 @@ void Adafruit_AW9523::digitalWrite(uint8_t pin, bool val) {
   outbit.write(val);
 }
 
+bool Adafruit_AW9523::digitalRead(uint8_t pin) {
+  Adafruit_I2CRegister input0reg = Adafruit_I2CRegister(i2c_dev, AW9523_REG_INPUT0, 2, LSBFIRST);
+  Adafruit_I2CRegisterBits inbit =
+      Adafruit_I2CRegisterBits(&input0reg, 1, pin); // # bits, bit_shift
+
+  return inbit.read();
+}
+
+
+void Adafruit_AW9523::enableInterrupts(uint8_t pin, bool en) {
+  Adafruit_I2CRegister intenablereg = Adafruit_I2CRegister(i2c_dev, AW9523_REG_INTENABLE0, 2, LSBFIRST);
+  Adafruit_I2CRegisterBits irqbit =
+      Adafruit_I2CRegisterBits(&intenablereg, 1, pin); // # bits, bit_shift
+
+  irqbit.write(!en);
+}
+
 
 
 void Adafruit_AW9523::pinMode(uint8_t pin, uint8_t mode) {

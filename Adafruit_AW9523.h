@@ -30,6 +30,7 @@
 #define AW9523_REG_INPUT0 0x00
 #define AW9523_REG_OUTPUT0 0x02
 #define AW9523_REG_CONFIG0 0x04
+#define AW9523_REG_INTENABLE0 0x04
 #define AW9523_REG_GCR 0x11
 #define AW9523_REG_LEDMODE 0x12
 
@@ -45,17 +46,20 @@ public:
 
   bool begin(uint8_t address = AW9523_DEFAULT_ADDR, TwoWire *wire = &Wire);
   bool reset(void);
+  bool openDrainPort0(bool od);
 
+  // All 16 pins at once
   bool outputGPIO(uint16_t pins);
   uint16_t inputGPIO(void);
   bool configureDirection(uint16_t pins);
-  bool openDrainPort0(bool od);
+  bool configureLEDMode(uint16_t pins);
 
+  // Individual pin control
   void pinMode(uint8_t pin, uint8_t mode);
   void digitalWrite(uint8_t pin, bool val);
-  bool configureLEDMode(uint16_t pins);
+  bool digitalRead(uint8_t pin);
   void analogWrite(uint8_t pin, uint8_t val);
-
+  void enableInterrupts(uint8_t pin, bool en);
 
 protected:
   uint16_t _pin_outputs = 0;
