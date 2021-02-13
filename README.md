@@ -4,7 +4,7 @@ This is a library for the AW9523 GPIO Expander and LED Driver
 
 Designed specifically to work with the AW9523 breakout in the Adafruit shop:
 
-- https://www.adafruit.com/products/4885
+- https://www.adafruit.com/products/4886
 
 These boards use **I2C** to communicate. 2 pins are required to interface.
 Adafruit invests time and resources providing this open source code,
