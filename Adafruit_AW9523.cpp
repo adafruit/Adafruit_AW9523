@@ -92,8 +92,14 @@ bool Adafruit_AW9523::reset(void) {
  */
 bool Adafruit_AW9523::outputGPIO(uint16_t pins) {
   Adafruit_I2CRegister output0reg =
-      Adafruit_I2CRegister(i2c_dev, AW9523_REG_OUTPUT0, 2, LSBFIRST);
-  if (!output0reg.write(pins)) {
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_OUTPUT0);
+  Adafruit_I2CRegister output1reg =
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_OUTPUT0+1);
+
+  if (!output0reg.write(pins & 0xFF)) {
+    return false;
+  }
+  if (!output1reg.write(pins >> 8)) {
     return false;
   }
   return true;
@@ -105,8 +111,11 @@ bool Adafruit_AW9523::outputGPIO(uint16_t pins) {
  */
 uint16_t Adafruit_AW9523::inputGPIO(void) {
   Adafruit_I2CRegister input0reg =
-      Adafruit_I2CRegister(i2c_dev, AW9523_REG_INPUT0, 2, LSBFIRST);
-  return input0reg.read();
+
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_INPUT0);
+  Adafruit_I2CRegister input1reg =
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_INPUT0+1);
+  return ((uint16_t)input1reg.read() << 8) | (uint16_t)input0reg.read();
 }
 
 /*!
@@ -116,8 +125,13 @@ uint16_t Adafruit_AW9523::inputGPIO(void) {
  */
 bool Adafruit_AW9523::interruptEnableGPIO(uint16_t pins) {
   Adafruit_I2CRegister int0reg =
-      Adafruit_I2CRegister(i2c_dev, AW9523_REG_INTENABLE0, 2, LSBFIRST);
-  if (!int0reg.write(~pins)) {
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_INTENABLE0);
+  Adafruit_I2CRegister int1reg =
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_INTENABLE0+1);
+  if (!int0reg.write(~(pins & 0xFF))) {
+    return false;
+  }
+  if (!int1reg.write(~(pins >> 8))) {
     return false;
   }
   return true;
@@ -130,8 +144,13 @@ bool Adafruit_AW9523::interruptEnableGPIO(uint16_t pins) {
  */
 bool Adafruit_AW9523::configureDirection(uint16_t pins) {
   Adafruit_I2CRegister conf0reg =
-      Adafruit_I2CRegister(i2c_dev, AW9523_REG_CONFIG0, 2, LSBFIRST);
-  if (!conf0reg.write(~pins)) {
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_CONFIG0);
+  Adafruit_I2CRegister conf1reg =
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_CONFIG0+1);
+  if (!conf0reg.write(~(pins & 0xFF))) {
+    return false;
+  }
+  if (!conf1reg.write(~(pins >> 8))) {
     return false;
   }
 
@@ -144,9 +163,15 @@ bool Adafruit_AW9523::configureDirection(uint16_t pins) {
  *    @return True I2C write command was acknowledged
  */
 bool Adafruit_AW9523::configureLEDMode(uint16_t pins) {
-  Adafruit_I2CRegister ledmodereg =
-      Adafruit_I2CRegister(i2c_dev, AW9523_REG_LEDMODE, 2, LSBFIRST);
-  if (!ledmodereg.write(~pins)) {
+  Adafruit_I2CRegister ledmodereg0 =
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_LEDMODE);
+  Adafruit_I2CRegister ledmodereg1 =
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_LEDMODE+1);
+
+  if (!ledmodereg0.write(~(pins & 0xFF))) {
+    return false;
+  }
+  if (!ledmodereg1.write(~(pins >> 8))) {
     return false;
   }
 
@@ -184,9 +209,9 @@ void Adafruit_AW9523::analogWrite(uint8_t pin, uint8_t val) {
  */
 void Adafruit_AW9523::digitalWrite(uint8_t pin, bool val) {
   Adafruit_I2CRegister output0reg =
-      Adafruit_I2CRegister(i2c_dev, AW9523_REG_OUTPUT0, 2, LSBFIRST);
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_OUTPUT0 + (pin / 8));
   Adafruit_I2CRegisterBits outbit =
-      Adafruit_I2CRegisterBits(&output0reg, 1, pin); // # bits, bit_shift
+      Adafruit_I2CRegisterBits(&output0reg, 1, pin % 8); // # bits, bit_shift
 
   outbit.write(val);
 }
@@ -197,11 +222,11 @@ void Adafruit_AW9523::digitalWrite(uint8_t pin, bool val) {
  *    @returns True for high value read, False for low value read
  */
 bool Adafruit_AW9523::digitalRead(uint8_t pin) {
-  Adafruit_I2CRegister input0reg =
-      Adafruit_I2CRegister(i2c_dev, AW9523_REG_INPUT0, 2, LSBFIRST);
-  Adafruit_I2CRegisterBits inbit =
-      Adafruit_I2CRegisterBits(&input0reg, 1, pin); // # bits, bit_shift
+  Adafruit_I2CRegister inputreg =
+    Adafruit_I2CRegister(i2c_dev, AW9523_REG_INPUT0 + (pin / 8));
 
+  Adafruit_I2CRegisterBits inbit =
+    Adafruit_I2CRegisterBits(&inputreg, 1, pin % 8); // # bits, bit_shift
   return inbit.read();
 }
 
@@ -212,9 +237,9 @@ bool Adafruit_AW9523::digitalRead(uint8_t pin) {
  */
 void Adafruit_AW9523::enableInterrupt(uint8_t pin, bool en) {
   Adafruit_I2CRegister intenablereg =
-      Adafruit_I2CRegister(i2c_dev, AW9523_REG_INTENABLE0, 2, LSBFIRST);
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_INTENABLE0 + (pin / 8));
   Adafruit_I2CRegisterBits irqbit =
-      Adafruit_I2CRegisterBits(&intenablereg, 1, pin); // # bits, bit_shift
+      Adafruit_I2CRegisterBits(&intenablereg, 1, pin % 8); // # bits, bit_shift
 
   irqbit.write(!en);
 }
@@ -228,15 +253,15 @@ void Adafruit_AW9523::enableInterrupt(uint8_t pin, bool en) {
 void Adafruit_AW9523::pinMode(uint8_t pin, uint8_t mode) {
   // GPIO Direction
   Adafruit_I2CRegister conf0reg =
-      Adafruit_I2CRegister(i2c_dev, AW9523_REG_CONFIG0, 2, LSBFIRST);
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_CONFIG0 + (pin / 8));
   Adafruit_I2CRegisterBits confbit =
-      Adafruit_I2CRegisterBits(&conf0reg, 1, pin); // # bits, bit_shift
+      Adafruit_I2CRegisterBits(&conf0reg, 1, pin % 8); // # bits, bit_shift
 
   // GPIO mode or LED mode?
   Adafruit_I2CRegister ledmodereg =
-      Adafruit_I2CRegister(i2c_dev, AW9523_REG_LEDMODE, 2, LSBFIRST);
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_LEDMODE + (pin / 8));
   Adafruit_I2CRegisterBits modebit =
-      Adafruit_I2CRegisterBits(&ledmodereg, 1, pin); // # bits, bit_shift
+      Adafruit_I2CRegisterBits(&ledmodereg, 1, pin % 8); // # bits, bit_shift
 
   if (mode == OUTPUT) {
     confbit.write(0);
