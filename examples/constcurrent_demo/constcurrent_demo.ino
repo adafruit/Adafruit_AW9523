@@ -17,6 +17,7 @@ void setup() {
 
   Serial.println("AW9523 found!");
   aw.pinMode(LedPin, AW9523_LED_MODE); // set to constant current drive!
+  aw.configureLEDCurrent(2); // half of 37 mA, since I have 20 mA LEDs
 }
 
 
