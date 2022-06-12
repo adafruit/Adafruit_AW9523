@@ -292,3 +292,28 @@ bool Adafruit_AW9523::openDrainPort0(bool od) {
 
   return opendrain.write(!od);
 }
+
+/*!
+ * From the data sheet: 256 step dimming range select
+ * 00：0~IMAX
+ * 01：0~(IMAX×3/4)
+ * 10：0~(IMAX×2/4)
+ * 11：0~(IMAX×1/4)
+ * 
+ *    @brief  Sets reduction of LED current from 1/4 Imax to Imax (0 = Imax, 1 = 3/4 Imax ... 3 = 1/4 Imax). Imax = 37 mA
+ *    @param  quarters_to_reduce: 0-3, how much to reduce the LED current
+ *    @return True I2C write command was acknowledged
+ * 
+ */
+bool Adafruit_AW9523::configureLEDCurrent(uint8_t quarters_to_reduce) { 
+
+  Adafruit_I2CRegister gcrreg =
+      Adafruit_I2CRegister(i2c_dev, AW9523_REG_GCR, 1);
+
+  Adafruit_I2CRegisterBits ISEL =
+      Adafruit_I2CRegisterBits(&gcrreg, 2, 0); // # bits, bit_shift
+
+  return ISEL.write(quarters_to_reduce);
+
+}
+
