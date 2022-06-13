@@ -314,6 +314,4 @@ bool Adafruit_AW9523::configureLEDCurrent(uint8_t quarters_to_reduce) {
       Adafruit_I2CRegisterBits(&gcrreg, 2, 0); // # bits, bit_shift
 
   return ISEL.write(quarters_to_reduce);
-
 }
-
