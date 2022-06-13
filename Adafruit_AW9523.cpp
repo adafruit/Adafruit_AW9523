@@ -299,7 +299,7 @@ bool Adafruit_AW9523::openDrainPort0(bool od) {
  * 01：0~(IMAX×3/4)
  * 10：0~(IMAX×2/4)
  * 11：0~(IMAX×1/4)
- * 
+ *
  *    @brief  Sets reduction of LED current from 1/4 Imax to Imax (0 = Imax,
  * 1 = 3/4 Imax, 2 = 1/2 Imax, 3 = 1/4 Imax). Imax = 37 mA
  *    @param  quarters_to_reduce: 0-3, how much to reduce the LED current
