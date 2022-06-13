@@ -2,8 +2,6 @@
 
 This is a library for the AW9523 GPIO Expander and LED Driver
 
-Forked from the Adafruit version by Keith Rohrer to add support for reducing the LED current.
-
 Designed specifically to work with the AW9523 breakout in the Adafruit shop:
 
 - https://www.adafruit.com/products/4886
