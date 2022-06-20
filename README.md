@@ -12,7 +12,7 @@ please support Adafruit and open-source hardware by purchasing
 products from Adafruit!
 
 Written by Limor Fried/Ladyada for Adafruit Industries.  
-Forked from the Adafruit version by Keith Rohrer to add support for reducing the LED current.
+Support for the LED current control register added by Keith Rohrer.
 BSD license, all text above must be included in any redistribution.
 
 ## Installing this Library
