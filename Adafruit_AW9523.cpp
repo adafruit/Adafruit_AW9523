@@ -187,7 +187,7 @@ void Adafruit_AW9523::analogWrite(uint8_t pin, uint8_t val) {
   uint8_t reg;
 
   // See Table 13. 256 step dimming control register
-  if ((pin >= 0) && (pin <= 7)) {
+  if (pin <= 7) {
     reg = 0x24 + pin;
   }
   if ((pin >= 8) && (pin <= 11)) {
@@ -195,6 +195,8 @@ void Adafruit_AW9523::analogWrite(uint8_t pin, uint8_t val) {
   }
   if ((pin >= 12) && (pin <= 15)) {
     reg = 0x2C + pin - 12;
+  } else {
+    return; // failed
   }
 
   Adafruit_I2CRegister ledCCreg = Adafruit_I2CRegister(i2c_dev, reg);
