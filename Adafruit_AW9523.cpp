@@ -281,7 +281,7 @@ void Adafruit_AW9523::pinMode(uint8_t pin, uint8_t mode) {
 /*!
  *    @brief  Turns on/off open drain output for ALL port 0 pins (GPIO 0-7)
  *    @param  od True to enable open drain, False for push-pull
- *    @return True I2C write command was acknowledged
+ *    @return True if I2C write command was acknowledged, otherwise false
  */
 bool Adafruit_AW9523::openDrainPort0(bool od) {
   Adafruit_I2CRegister gcrreg =
