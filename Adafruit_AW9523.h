@@ -23,7 +23,7 @@
 
 #define AW9523_DEFAULT_ADDR 0x58 ///< The default I2C address for our breakout
 
-#define AW9523_LED_MODE 0x3 ///< Special pinMode() macro for constant current
+#define AW9523_LED_MODE 0x99 ///< Special pinMode() macro for constant current
 
 #define AW9523_REG_CHIPID 0x10     ///< Register for hardcode chip ID
 #define AW9523_REG_SOFTRESET 0x7F  ///< Register for soft resetting
