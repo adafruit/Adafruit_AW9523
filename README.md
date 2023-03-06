@@ -12,6 +12,7 @@ please support Adafruit and open-source hardware by purchasing
 products from Adafruit!
 
 Written by Limor Fried/Ladyada for Adafruit Industries.  
+Support for the LED current control register added by Keith Rohrer.
 BSD license, all text above must be included in any redistribution.
 
 ## Installing this Library

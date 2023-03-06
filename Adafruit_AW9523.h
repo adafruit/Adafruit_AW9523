@@ -53,6 +53,7 @@ public:
   bool configureDirection(uint16_t pins);
   bool configureLEDMode(uint16_t pins);
   bool interruptEnableGPIO(uint16_t pins);
+  bool configureLEDCurrent(uint8_t quarters_to_reduce);
 
   // Individual pin control
   void pinMode(uint8_t pin, uint8_t mode);
